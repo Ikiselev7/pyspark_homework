@@ -9,5 +9,6 @@ class IllegalCharRemover:
         self.replacement = replacement
 
     def remove_illegal_chars(self, dataframe: DataFrame, source_column: str, target_column: str):
-        return dataframe.withColumn(target_column, regexp_replace(col(source_column), self.regex, self.replacement))\
+        return dataframe\
+            .withColumn(target_column, regexp_replace(col(source_column), self.regex, self.replacement))\
             .drop(col(source_column))
