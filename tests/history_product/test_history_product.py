@@ -1,6 +1,8 @@
+import sys
 from pyspark import Row
 from pyspark.sql import SparkSession
 
+sys.path.append('../..')
 from homework.history_product.HistoryProduct import HistoryProduct
 
 
@@ -224,3 +226,31 @@ def test_history_product_no_key_nulls(spark_session: SparkSession):
                                  Row(id=3, name='Jan', score=0.8, meta='deleted'),
                                  Row(id=3, name='Janus', score=0.8, meta='inserted'),
                                  Row(id=4, name='Lukas', score=0.7, meta='inserted')]
+
+
+
+
+def main():
+    spark = SparkSession.builder \
+        .master('local[1]') \
+        .getOrCreate()
+    # print('test1')
+    # test_history_product_one_key(spark)
+    # print('test2')
+    # test_history_product_one_key_old_nulls(spark)
+    # print('test3')
+    # test_history_product_one_key_nulls(spark)
+    # print('test4')
+    # test_history_product_one_key_new_nulls(spark)
+    # print('test5')
+    # test_history_product_two_keys(spark)
+    print('test6')
+    test_history_product_no_key(spark)
+    print('test7')
+    test_history_product_no_key_nulls(spark)
+
+
+
+
+if __name__=='__main__':
+    main()

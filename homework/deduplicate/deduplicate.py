@@ -1,7 +1,7 @@
 from typing import Union, List
 
 from pyspark.sql import DataFrame
-
+from pyspark.sql.functions import col, lit
 
 class Deduplicator:
     """
@@ -11,4 +11,10 @@ class Deduplicator:
 
     # ToDo: Implement this method
     def deduplicate(self, primary_keys: Union[str, List[str]], dataframe: DataFrame) -> DataFrame:
-        pass
+        if not primary_keys:
+            dataframe = dataframe.dropDuplicates()
+        elif isinstance(primary_keys, list):
+            dataframe = dataframe.dropDuplicates(primary_keys)
+        else:
+            dataframe = dataframe.dropDuplicates([primary_keys])
+        return dataframe
