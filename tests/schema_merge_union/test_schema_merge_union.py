@@ -102,12 +102,12 @@ def main():
         .master('local[1]') \
         .getOrCreate()
 
-    # print('test1')
-    # test_merge_schemas_simple(spark)
-    # print('test2')
-    # test_merge_schemas_no_difference(spark)
-    # print('test3')
-    # test_merge_schemas_diff_types(spark)
+    print('test1')
+    test_merge_schemas_simple(spark)
+    print('test2')
+    test_merge_schemas_no_difference(spark)
+    print('test3')
+    test_merge_schemas_diff_types(spark)
     print('test4')
     test_merge_schemas_no_common(spark)
 

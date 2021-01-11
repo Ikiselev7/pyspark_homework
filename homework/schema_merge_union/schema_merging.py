@@ -12,10 +12,6 @@ class SchemaMerging:
 
     # ToDo: Implement dataset union with schema merging
     def union(self, dataframe1: DataFrame, dataframe2: DataFrame):
-
-
-        print(dataframe2.dtypes)
-
         columns = {}
 
         columns = {col[0]: {'df1': col[1]} for col in dataframe1.dtypes}
@@ -24,15 +20,11 @@ class SchemaMerging:
                 columns[col[0]]['df2'] = col[1]
             except KeyError:
                 columns[col[0]] = {'df2': col[1]}
-
-        print(columns)
-
         for col in columns:
             if 'df1' in columns[col].keys() and 'df2' in columns[col].keys():
                 type1 = columns[col]['df1']
                 type2 = columns[col]['df2']
                 if type1 != type2:
-
                     if type1=='string':
                         print('here23')
                         dataframe1 = dataframe1\
@@ -63,11 +55,5 @@ class SchemaMerging:
 
                 dataframe2 = dataframe2.withColumn(col, lit(None).cast(columns[col]['df1']))
 
-        dataframe1.printSchema()
-        dataframe2.printSchema()
-
         res = dataframe1.unionByName(dataframe2)
-        res.printSchema()
-        for d in res.collect():
-            print(d)
         return res
