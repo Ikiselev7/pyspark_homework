@@ -11,4 +11,10 @@ class Deduplicator:
 
     # ToDo: Implement this method
     def deduplicate(self, primary_keys: Union[str, List[str]], dataframe: DataFrame) -> DataFrame:
-        pass
+        if primary_keys:
+            if isinstance(primary_keys, str):
+                primary_keys = [primary_keys]
+            df_modified = dataframe.dropDuplicates(primary_keys)
+        else:
+            df_modified = dataframe.distinct()
+        return df_modified
