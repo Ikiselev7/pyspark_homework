@@ -1,6 +1,8 @@
 from pyspark import Row
 from pyspark.sql import SparkSession
 
+import sys
+sys.path.append('../..')
 from homework.unpivot.Unpivot import Unpivot
 
 
@@ -82,3 +84,26 @@ def test_unpivot_data_no_constant_cols(spark_session: SparkSession):
                                         Row(date='28.02', score=0.7), Row(date='10.03', score=0.98),
                                         Row(date='20.02', score=0.5), Row(date='10.02', score=0.2),
                                         Row(date='28.02', score=0.9), Row(date='10.03', score=1.0)}
+
+
+def main():
+    spark = SparkSession.builder \
+        .master('local[1]') \
+        .getOrCreate()
+
+    print('test1')
+    test_unpivot_data_simple(spark)
+    # print('test2')
+    # test_unpivot_data_more_cols(spark)
+    # print('test3')
+    # test_unpivot_data_no_dynamic_cols(spark)
+    # print('test4')
+    # test_unpivot_data_no_constant_cols(spark)
+
+
+
+
+if __name__=='__main__':
+    main()
+
+
