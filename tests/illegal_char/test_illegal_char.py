@@ -1,7 +1,11 @@
 import pyspark
+from pyspark.sql import SparkSession
 import pytest
 
+# import sys
+# sys.path.append('../..')
 from homework.illegal_char.illegal_char_remover import IllegalCharRemover
+
 
 
 def test_simple(spark_session: pyspark.sql.SparkSession):
@@ -44,3 +48,24 @@ def test_replace_none_should_fail(spark_session: pyspark.sql.SparkSession):
     with pytest.raises(ValueError):
         IllegalCharRemover(['^', '\\', '/', '[', ']', '{', '}'], None)
 
+
+# def main():
+#     spark = SparkSession.builder \
+#         .master('local[1]') \
+#         .getOrCreate()
+#
+#     print('test1')
+#     test_simple(spark)
+#     print('test2')
+#     test_remove_special(spark)
+#     print('test3')
+#     test_remove_empty_should_fail(spark)
+#     print('test4')
+#     test_remove_none_should_fail(spark)
+#     print('test5')
+#     test_replace_none_should_fail(spark)
+#
+#
+#
+# if __name__ == '__main__':
+#     main()

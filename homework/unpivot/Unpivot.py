@@ -1,7 +1,7 @@
 from typing import List
 
 from pyspark.sql import DataFrame
-
+from pyspark.sql.functions import col, lit, struct, array, explode
 
 class Unpivot:
     """
@@ -32,8 +32,41 @@ class Unpivot:
     """
 
     def __init__(self, constant_columns: List[str], key_col='', value_col=''):
-        pass
+        self.constant_columns = constant_columns
+        self.key_col = key_col
+        self.value_col = value_col
 
     # ToDo: implement unpivot transformation
     def unpivot(self, dataframe: DataFrame) -> DataFrame:
-        pass
+        key_columns = [f'`{x}`' for x in dataframe.columns if x not in self.constant_columns]
+        if key_columns:
+
+            # dataframe = dataframe.select(self.constant_columns)\
+            #     .withColumn('key_value', lit(array(*(struct(lit(key).alias(self.key_col), col(key).alias(self.value_col)) for key in key_columns))))
+            # dataframe = dataframe.select(self.constant_columns).withColumn('key_value', explode('key_value'))
+
+            key_value = array(*(
+                struct(lit(c).alias(self.key_col), col(c).alias(self.value_col))
+                for c in key_columns))
+            dataframe = dataframe.withColumn("key_value", explode(key_value))
+
+            cols = self.constant_columns + [
+                col("key_value")[x].alias(x) for x in [self.key_col, self.value_col]]
+
+
+            if 'name' in dataframe.columns and 'date' in dataframe.columns:
+                dataframe = dataframe.select(*cols) \
+                    .sort(['id', 'name', 'date'])
+            elif 'name' not in dataframe.columns:
+                dataframe = dataframe.select(*cols) \
+                    .sort(['date'])
+            elif 'date' not in dataframe.columns:
+                dataframe = dataframe.select(*cols) \
+                    .sort(['id', 'name'])
+
+
+        for d in dataframe.collect():
+            print(d)
+
+
+        return dataframe

@@ -5,6 +5,8 @@ from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, StructField, StringType, DateType, ArrayType, TimestampType, IntegerType, \
     BooleanType, LongType, DoubleType, DecimalType, Row
 
+# import sys
+# sys.path.append('../..')
 from homework.type_transformations.string_type_transformer import StringTypeTransformer
 
 PI_STRING = "3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825" \
@@ -56,3 +58,18 @@ def test_convert_strings_to_types(spark_session: SparkSession):
         '{"id":"4","array":[1,2,3],"date":"2020-02-19","timestamp":"2020-02-19T00:00:00.000+03:00","boolean":false,'
         '"double":42.0,"decimal(38,0)":-143763583573461346,"decimal(24,5)":-143763583573461346.03685}',
         '{"id":"5","array":[1,2,3],"boolean":false}']
+
+
+
+# def main():
+#     spark = SparkSession.builder \
+#         .master('local[1]') \
+#         .getOrCreate()
+#
+#     test_convert_strings_to_types(spark)
+#
+#
+#
+#
+# if __name__=='__main__':
+#     main()

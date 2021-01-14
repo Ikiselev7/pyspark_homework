@@ -1,4 +1,5 @@
 from pyspark.sql import DataFrame
+from pyspark.sql.functions import lit
 
 
 class SchemaMerging:
@@ -12,4 +13,34 @@ class SchemaMerging:
 
     # ToDo: Implement dataset union with schema merging
     def union(self, dataframe1: DataFrame, dataframe2: DataFrame):
-        pass
+
+        columns = {col[0]: {'df1': col[1]} for col in dataframe1.dtypes}
+        for col in dataframe2.dtypes:
+            try:
+                columns[col[0]]['df2'] = col[1]
+            except KeyError:
+                columns[col[0]] = {'df2': col[1]}
+
+        for col in columns:
+            if 'df1' in columns[col].keys() and 'df2' in columns[col].keys():
+                type1 = columns[col]['df1']
+                type2 = columns[col]['df2']
+                if type1 != type2:
+                    dataframe1 = dataframe1 \
+                        .withColumn(f'{col}_{type1}', dataframe1[col]) \
+                        .withColumn(f'{col}_{type2}', lit(None).cast(columns[col]['df2'])) \
+                        .drop(col)
+
+                    dataframe2 = dataframe2 \
+                        .withColumn(f'{col}_{type2}', dataframe2[col]) \
+                        .withColumn(f'{col}_{type1}', lit(None).cast(columns[col]['df1'])) \
+                        .drop(col)
+
+            elif 'df1' not in columns[col].keys():
+                dataframe1 = dataframe1.withColumn(col, lit(None).cast(columns[col]['df2']))
+
+            elif 'df2' not in columns[col].keys():
+                dataframe2 = dataframe2.withColumn(col, lit(None).cast(columns[col]['df1']))
+        result = dataframe1.unionByName(dataframe2)
+
+        return result
