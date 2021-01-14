@@ -30,7 +30,4 @@ class IllegalCharRemover:
             .withColumn(source_column, regexp_replace(source_column, fr'[{chars}]', self.replacement))\
             .withColumnRenamed(source_column, target_column)
 
-        for d in dataframe.collect():
-            print(d)
-
         return dataframe

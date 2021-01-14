@@ -36,37 +36,11 @@ class SchemaMerging:
                         .withColumn(f'{col}_{type1}', lit(None).cast(columns[col]['df1'])) \
                         .drop(col)
 
-
-
-                    # if type1 == 'string':
-                    #     dataframe1 = dataframe1 \
-                    #         .withColumn(f'{col}_{type1}', lit(None).cast(columns[col]['df1'])) \
-                    #         .withColumn(f'{col}_{type2}', dataframe1[col].cast(type2)) \
-                    #         .drop(col)
-                    #     dataframe2 = dataframe2 \
-                    #         .withColumnRenamed(col, f'{col}_{type2}') \
-                    #         .withColumn(f'{col}_{type1}', lit(None).cast(columns[col]['df1'])) \
-                    #         .drop(col)
-                    #
-                    # elif type2 == 'string':
-                    #     dataframe2 = dataframe2 \
-                    #         .withColumn(f'{col}_{type2}', lit(None).cast(columns[col]['df2'])) \
-                    #         .withColumn(f'{col}_{type1}', dataframe2[col].cast(type1)) \
-                    #         .drop(col)
-                    #
-                    #     dataframe1 = dataframe1 \
-                    #         .withColumnRenamed(col, f'{col}_{type1}') \
-                    #         .withColumn(f'{col}_{type2}', lit(None).cast(columns[col]['df2'])) \
-                    #         .drop(col)
-
             elif 'df1' not in columns[col].keys():
                 dataframe1 = dataframe1.withColumn(col, lit(None).cast(columns[col]['df2']))
 
             elif 'df2' not in columns[col].keys():
                 dataframe2 = dataframe2.withColumn(col, lit(None).cast(columns[col]['df1']))
         result = dataframe1.unionByName(dataframe2)
-
-        for r in result.collect():
-            print(r)
 
         return result

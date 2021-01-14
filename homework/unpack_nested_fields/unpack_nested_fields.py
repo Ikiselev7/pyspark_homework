@@ -17,7 +17,6 @@ class UnpackNestedFields:
 
         nested = True if 'array' in ''.join([x[1] for x in dataframe.dtypes]) \
                          or 'struct' in ''.join([x[1] for x in dataframe.dtypes]) else False
-        print('nested is ', nested)
         while nested:
             columns = [x for x in dataframe.columns]
             for field in dataframe.schema.fields:
