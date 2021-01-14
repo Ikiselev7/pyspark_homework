@@ -1,6 +1,5 @@
 from pyspark.sql import DataFrame
-from pyspark.sql.functions import col, lit, expr
-
+from pyspark.sql.functions import lit, expr
 
 
 class HistoryProduct:
@@ -16,7 +15,6 @@ class HistoryProduct:
     """
     def __init__(self, primary_keys=None):
         self.primary_keys = primary_keys
-
 
     # ToDo: Implement history product
     def get_history_product(self, old_dataframe: DataFrame, new_dataframe: DataFrame):
@@ -39,8 +37,6 @@ class HistoryProduct:
         for c in cols:
             not_changed_keys.append(f'old.{c} <=> new.{c}')
         not_changed_expression = ' and '.join(not_changed_keys)
-
-
 
         old_dataframe = old_dataframe.alias('old')
         new_dataframe = new_dataframe.alias('new')
@@ -66,28 +62,10 @@ class HistoryProduct:
         old_rows = old_rows.withColumn('meta', lit('deleted'))
         new_rows = new_rows.withColumn('meta', lit('inserted'))
 
-        # for r in not_changed_rows.collect():
-        #     print(r)
-        #
-        # for r in changed_rows.collect():
-        #     print(r)
-        #
-        # for r in old_rows.collect():
-        #     print(r)
-        #
-        # for r in new_rows.collect():
-        #     print(r)
-        # print('=============================================')
-
-
         result_dateframe = not_changed_rows\
                             .union(changed_rows)\
                             .union(old_rows)\
                             .union(new_rows)\
                             .sort('id', 'name')
-
-        # resdf = result_dateframe.collect()
-        # for d in resdf:
-        #     print(d)
 
         return result_dateframe

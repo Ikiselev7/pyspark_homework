@@ -53,8 +53,10 @@ class Unpivot:
             cols = self.constant_columns + [
                 col("key_value")[x].alias(x) for x in [self.key_col, self.value_col]]
 
-            dataframe = dataframe.select(*cols)\
+
+            dataframe = dataframe.select(*cols) \
                 .sort(['id', 'name', 'date'])
+
 
         for d in dataframe.collect():
             print(d)

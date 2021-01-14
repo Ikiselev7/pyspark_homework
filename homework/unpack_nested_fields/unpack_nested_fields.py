@@ -1,6 +1,5 @@
 from pyspark.sql.dataframe import DataFrame
-from pyspark.sql.types import StructType
-from pyspark.sql.functions import col, lit, explode
+from pyspark.sql.functions import col, explode
 
 import time
 

@@ -91,14 +91,14 @@ def main():
         .master('local[1]') \
         .getOrCreate()
 
-    print('test1')
-    test_unpivot_data_simple(spark)
+    # print('test1')
+    # test_unpivot_data_simple(spark)
     # print('test2')
     # test_unpivot_data_more_cols(spark)
     # print('test3')
     # test_unpivot_data_no_dynamic_cols(spark)
-    # print('test4')
-    # test_unpivot_data_no_constant_cols(spark)
+    print('test4')
+    test_unpivot_data_no_constant_cols(spark)
 
 
 

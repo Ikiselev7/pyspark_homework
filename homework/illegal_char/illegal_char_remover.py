@@ -1,8 +1,5 @@
 from pyspark.sql.dataframe import DataFrame
-import sys
-from pyspark import Row
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, lit, expr, regexp_replace
+from pyspark.sql.functions import regexp_replace
 
 from typing import List
 
@@ -13,7 +10,6 @@ class IllegalCharRemover:
     """
     def __init__(self, chars: List[str], replacement):
         print(chars, replacement)
-
 
         if chars:
             self.chars = chars

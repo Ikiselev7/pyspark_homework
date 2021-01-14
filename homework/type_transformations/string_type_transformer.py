@@ -55,8 +55,3 @@ class StringTypeTransformer:
         print(dataframe.schema)
 
         return dataframe
-
-    # ("1", [1, 2, 3], "19-02-2020", "19-02-2020 00:00:00", "true", "1", "0.5", "123534627458685341",
-    #  "123534627458685341")
-
-    # ["id", "array", "date", "timestamp", "boolean", "integer", "double", "decimal(38,0)", "decimal(24,5)"]
