@@ -1,8 +1,8 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StringType, LongType, Row
 
-import sys
-sys.path.append('../..')
+# import sys
+# sys.path.append('../..')
 from homework.unpack_nested_fields.unpack_nested_fields import UnpackNestedFields
 
 
@@ -136,27 +136,27 @@ def test_should_not_unpack(spark_session: SparkSession):
     ]
 
 
-
-def main():
-    spark = SparkSession.builder \
-        .master('local[1]') \
-        .getOrCreate()
-
-    print('test1')
-    test_should_unpack_array(spark)
-    print('test2')
-    test_should_unpack_struct(spark)
-    print('test3')
-    test_should_unpack_struct_with_array(spark)
-    print('test4')
-    test_should_unpack_array_of_structs(spark)
-    print('test5')
-    test_should_not_unpack(spark)
-
-
-
-
-if __name__=='__main__':
-    main()
+#
+# def main():
+#     spark = SparkSession.builder \
+#         .master('local[1]') \
+#         .getOrCreate()
+#
+#     print('test1')
+#     test_should_unpack_array(spark)
+#     print('test2')
+#     test_should_unpack_struct(spark)
+#     print('test3')
+#     test_should_unpack_struct_with_array(spark)
+#     print('test4')
+#     test_should_unpack_array_of_structs(spark)
+#     print('test5')
+#     test_should_not_unpack(spark)
+#
+#
+#
+#
+# if __name__=='__main__':
+#     main()
 
 

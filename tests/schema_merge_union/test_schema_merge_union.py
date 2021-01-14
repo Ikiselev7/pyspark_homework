@@ -1,8 +1,8 @@
 from pyspark import Row
 from pyspark.sql import SparkSession
 
-import sys
-sys.path.append('../..')
+# import sys
+# sys.path.append('../..')
 from homework.schema_merge_union.schema_merging import SchemaMerging
 
 
@@ -97,20 +97,20 @@ def test_merge_schemas_no_common(spark_session: SparkSession):
                                 Row(uuid=None, car=None, mileage=None, id=3, product='pineapple', weight='1', price='200')]
 
 
-def main():
-    spark = SparkSession.builder \
-        .master('local[1]') \
-        .getOrCreate()
-
-    print('test1')
-    test_merge_schemas_simple(spark)
-    print('test2')
-    test_merge_schemas_no_difference(spark)
-    print('test3')
-    test_merge_schemas_diff_types(spark)
-    print('test4')
-    test_merge_schemas_no_common(spark)
-
-
-if __name__=='__main__':
-    main()
+# def main():
+#     spark = SparkSession.builder \
+#         .master('local[1]') \
+#         .getOrCreate()
+#
+#     print('test1')
+#     test_merge_schemas_simple(spark)
+#     print('test2')
+#     test_merge_schemas_no_difference(spark)
+#     print('test3')
+#     test_merge_schemas_diff_types(spark)
+#     print('test4')
+#     test_merge_schemas_no_common(spark)
+#
+#
+# if __name__=='__main__':
+#     main()

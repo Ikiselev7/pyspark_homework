@@ -1,6 +1,9 @@
 import pyspark
-import sys
-sys.path.append('../..')
+
+
+# import sys
+# sys.path.append('../..')
+
 from homework.deduplicate.deduplicate import Deduplicator
 
 
@@ -38,14 +41,14 @@ def test_deduplicate_by_id_and_account(spark_session: pyspark.sql.SparkSession):
 
 
 
-def main():
-    spark = pyspark.sql.SparkSession.builder \
-        .master('local[1]') \
-        .getOrCreate()
-    test_deduplicate_no_keys(spark)
-    test_deduplicate_by_id(spark)
-    test_deduplicate_by_id_and_account(spark)
-
-
-if __name__=='__main__':
-    main()
+# def main():
+#     spark = pyspark.sql.SparkSession.builder \
+#         .master('local[1]') \
+#         .getOrCreate()
+#     test_deduplicate_no_keys(spark)
+#     test_deduplicate_by_id(spark)
+#     test_deduplicate_by_id_and_account(spark)
+#
+#
+# if __name__=='__main__':
+#     main()

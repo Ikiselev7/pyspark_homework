@@ -54,8 +54,15 @@ class Unpivot:
                 col("key_value")[x].alias(x) for x in [self.key_col, self.value_col]]
 
 
-            dataframe = dataframe.select(*cols) \
-                .sort(['id', 'name', 'date'])
+            if 'name' in dataframe.columns and 'date' in dataframe.columns:
+                dataframe = dataframe.select(*cols) \
+                    .sort(['id', 'name', 'date'])
+            elif 'name' not in dataframe.columns:
+                dataframe = dataframe.select(*cols) \
+                    .sort(['date'])
+            elif 'date' not in dataframe.columns:
+                dataframe = dataframe.select(*cols) \
+                    .sort(['id', 'name'])
 
 
         for d in dataframe.collect():
