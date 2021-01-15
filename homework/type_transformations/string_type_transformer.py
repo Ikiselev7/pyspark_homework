@@ -1,5 +1,7 @@
+import datetime as dt
+
 from pyspark.sql import DataFrame
-from pyspark.sql.functions import col, lit, to_date, to_timestamp, when
+from pyspark.sql.functions import col, lit, to_date, to_timestamp, when, udf
 from pyspark.sql.types import StructType, DateType, TimestampType, BooleanType
 
 
@@ -9,12 +11,19 @@ class StringTypeTransformer:
     """
 
     def transform_dataframe(self, dataframe: DataFrame, expected_schema: StructType):
+        # function for converting timezone to GMT
+        convert_tz_to_gmt = udf(
+            lambda x: x.astimezone(dt.timezone(dt.timedelta(hours=3))) if x is not None else None,
+            TimestampType()
+        )
+
         # transforming dataframe according to expected schema
         for f in expected_schema.fields:
             if isinstance(f.dataType, DateType):
                 dataframe = dataframe.withColumn(f.name, to_date(col(f.name), 'd-M-y'))
             elif isinstance(f.dataType, TimestampType):
                 dataframe = dataframe.withColumn(f.name, to_timestamp(col(f.name), 'd-M-y H:m:s'))
+                dataframe = dataframe.withColumn(f.name, convert_tz_to_gmt(dataframe[f.name]))
             elif isinstance(f.dataType, BooleanType):
                 dataframe = dataframe.withColumn(f.name, when(
                     col(f.name).isin(['true', 'True', '1', 'y', 'Y', 'yes', 'Yes']),
