@@ -1,5 +1,5 @@
 from pyspark.sql import DataFrame
-from pyspark.sql.functions import col, lit, when, array, array_distinct
+from pyspark.sql.functions import col, lit, when, expr
 
 
 class HistoryProduct:
@@ -32,9 +32,13 @@ class HistoryProduct:
         meta_column = meta_column.otherwise('not_changed')
 
         # join old and new dataframes and adding 'meta' column
-        on = [col('o.' + c).eqNullSafe(col('n.' + c)) for c in self.primary_keys] or None
+        if self.primary_keys:
+            on = ' and '.join([f'o.{c} <=> n.{c}' for c in self.primary_keys])
+        else:
+            on = ' and '.join([f'o.{c} <=> n.{c}' for c in old_dataframe.columns])
+
         result_df = old_dataframe.withColumn('exists', lit(1)).alias('o') \
-            .join(new_dataframe.withColumn('exists', lit(1)).alias('n'), on, 'fullouter') \
+            .join(new_dataframe.withColumn('exists', lit(1)).alias('n'), expr(on), 'fullouter') \
             .withColumn('meta', meta_column)
 
         # suffix for result column names
