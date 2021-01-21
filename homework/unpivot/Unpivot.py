@@ -1,5 +1,5 @@
 from typing import List
-
+from pyspark.sql.functions import expr
 from pyspark.sql import DataFrame
 
 
@@ -32,8 +32,27 @@ class Unpivot:
     """
 
     def __init__(self, constant_columns: List[str], key_col='', value_col=''):
-        pass
+        self.constant_columns = constant_columns
+        self.key_col = key_col
+        self.value_col = value_col
 
     # ToDo: implement unpivot transformation
     def unpivot(self, dataframe: DataFrame) -> DataFrame:
-        pass
+        constant_columns = self.constant_columns
+        key_col = self.key_col
+        value_col = self.value_col
+
+        columns_to_pivot = [i for i in dataframe.columns if i not in constant_columns]
+        expression = ""
+        cnt = 0
+        for column in columns_to_pivot:
+            cnt += 1
+            if column.replace('.','',1).isdigit():
+                expression += f"'{column}' , `{column}`,"
+            else:
+                expression += f"'{column}' , {column},"
+
+        expression = f"stack({cnt}, {expression[:-1]}) as ({key_col}, {value_col})"
+        unpivoted_df = dataframe if cnt == 0 \
+            else dataframe.select(constant_columns + [expr(expression)])
+        return unpivoted_df
